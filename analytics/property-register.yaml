@@ -10,17 +10,32 @@ properties:
     umami_property_id: 508def7a-17a5-4510-a49b-a90c0cdafe76
     owner: Frankie and Mary
     privacy_classification: public_marketing_aggregate_only
-    status: implementation_complete_pending_merge_and_deploy
+    status: active_canary_validated
     integration_repository: Seckcey/8west_hostgator_account_all
     integration_branch: analytics/8westventures-canary
     source_reference_paths:
       - public_html/index.html
       - public_html/assets/js/main.js
     live_document_root: /srv/8west/www/8westventures.com/current/public
-    live_release_reference: /srv/8west/www/8westventures.com/releases/hostgator-20260717T121624Z/public
+    live_current_symlink: /srv/8west/www/8westventures.com/current
+    previous_release_reference: /srv/8west/www/8westventures.com/releases/hostgator-20260717T121624Z
+    active_release_pattern: /srv/8west/www/8westventures.com/releases/analytics-canary-*
+    active_release_exact_path: not_captured_in_acceptance_record
     integration_commit: ee70e2c098b004414b5018248f6bace86ffc295b
+    integration_merge_commit: 173240d672b876fd813b98073fce973d1669fb7b
+    analytics_governance_merge_commit: 75938ec0147720d9f71b509d2aac7ee189f1a2e6
+    deployment_layout_fix_merge_commit: 5e680f256f13af4e526ebc5860a1966d0f3b3115
     analytics_deployment_artifact_commit: 033d377a572ed664a576c88330b369b1543ad08a
-    first_production_date: null
+    first_production_date: 2026-07-20
+    canary_validation_date: 2026-07-20
+    canary_validation_status: passed
+    validation_evidence:
+      - production_pageview_observed
+      - approved_custom_events_observed
+      - contact_form_started_fired_once
+      - no_form_values_or_identifiers_observed_in_analytics_requests
+      - website_and_form_behavior_remained_functional
+      - tracker_failure_boundary_confirmed_fail_open
     tracker_configuration:
       script_url: https://analytics.8westventures.com/script.js
       auto_track_pageviews: true
