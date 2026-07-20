@@ -2,22 +2,25 @@
 
 ## Status
 
-Approved for implementation planning. Production instrumentation remains blocked until the Umami property ID is recorded and the exact deployment path is verified.
+Approved for implementation. The Umami production property and live Apache deployment path are verified.
 
-## Source inspection
+## Verified deployment facts
 
-The current source is represented in `Seckcey/8west_hostgator_account_all` under `public_html/`:
-
-- `public_html/index.html`
-- `public_html/assets/js/main.js`
+- Umami website ID: `508def7a-17a5-4510-a49b-a90c0cdafe76`
+- Tracker URL: `https://analytics.8westventures.com/script.js`
+- Production hostnames: `8westventures.com`, `www.8westventures.com`
+- Apache document root: `/srv/8west/www/8westventures.com/current/public`
+- Current release: `/srv/8west/www/8westventures.com/releases/hostgator-20260717T121624Z/public`
+- Source repository: `Seckcey/8west_hostgator_account_all`
+- Source paths:
+  - `public_html/index.html`
+  - `public_html/assets/js/main.js`
 
 The source contains a single-page corporate website, same-page navigation, links to the employee intranet and 8 West IT, direct email links, and a Web3Forms contact form.
 
-The live deployment path on the current EC2 host must be verified before changing production files.
-
 ## Tracking scope
 
-Automatic page views are allowed only for `8westventures.com` and `www.8westventures.com`. URL search parameters and hashes must be excluded.
+Automatic page views are allowed only for `8westventures.com` and `www.8westventures.com`. URL search parameters and hashes are excluded.
 
 Approved custom events:
 
@@ -45,15 +48,14 @@ Only categorical values declared in `analytics/event-dictionary.yaml` may be att
 
 ## Implementation design
 
-1. Add the deferred Umami tracker to the document head using the production property ID.
-2. Restrict tracking with `data-domains="8westventures.com,www.8westventures.com"`.
-3. Add `data-exclude-search="true"` and `data-exclude-hash="true"`.
-4. Add static `data-umami-event` attributes for navigation and outbound links where possible.
-5. Use JavaScript only for contact-form lifecycle events.
-6. Fire `contact_form_started` once on the first genuine interaction with a non-honeypot field.
-7. Fire `contact_form_submitted` only after Web3Forms returns success.
-8. Fire `contact_form_failed` with only `provider_rejected` or `network_error`.
-9. Guard every manual tracking call so an unavailable or blocked analytics script cannot affect site behavior.
+1. Load the Umami tracker asynchronously from the site's existing `assets/js/main.js`.
+2. Set the website ID and restrict tracking to the two production hostnames.
+3. Exclude search parameters and hash fragments.
+4. Use a single guarded click classifier with hard-coded categorical values for approved links.
+5. Fire `contact_form_started` once on the first genuine interaction with a non-honeypot field.
+6. Fire `contact_form_submitted` only after Web3Forms returns success.
+7. Fire `contact_form_failed` with only `provider_rejected` or `network_error`.
+8. Guard and queue manual tracking calls so an unavailable or blocked analytics script cannot affect site behavior.
 
 ## Acceptance checks
 
@@ -66,8 +68,8 @@ Only categorical values declared in `analytics/event-dictionary.yaml` may be att
 - successful form submission fires only after provider confirmation;
 - failures contain only `provider_rejected` or `network_error`;
 - browser network inspection shows no form contents or identifying values sent to Umami;
-- removal requires only deleting the tracker tag and approved event hooks.
+- removal requires only reverting the `main.js` analytics block.
 
 ## Rollback
 
-Remove the Umami tracker tag and all `data-umami-event*` attributes, then remove the guarded contact-form tracking calls. No application database or server configuration rollback is required.
+Restore the prior `assets/js/main.js` from the current release or switch the `current` symlink back to the prior release. No application database, Apache, Caddy, or Umami server rollback is required.
