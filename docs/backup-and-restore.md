@@ -4,6 +4,17 @@
 
 This procedure protects the self-hosted Umami PostgreSQL database. It does not modify application repositories or website integrations.
 
+## Approved pre-v1 backup model
+
+The approved pre-v1 design uses two layers:
+
+1. nightly local PostgreSQL logical backups under `/var/backups/8west-analytics`;
+2. EC2/EBS snapshots managed through AWS by Frankie.
+
+No separate S3 bucket, external backup provider, or custom upload pipeline is required before v1.0.
+
+AWS does not create EBS snapshots automatically unless a manual or scheduled snapshot mechanism is configured. The EC2/EBS snapshot schedule and retention are managed outside this repository.
+
 ## Local backup
 
 Run as root:
@@ -14,7 +25,7 @@ sudo /opt/8west-analytics/operations/backup-postgres.sh
 
 The script writes a PostgreSQL custom-format dump and matching SHA-256 checksum under `/var/backups/8west-analytics`. Files are owned by `root:root` with mode `0600`.
 
-The backup is accepted only when it is non-empty and `pg_restore --list` can parse it.
+The backup is accepted only when it is non-empty and version-matched PostgreSQL 17 `pg_restore --list` can parse it.
 
 ## Disposable restore validation
 
@@ -45,7 +56,7 @@ The default local retention is 14 days. The newest backup is always protected ev
 sudo RETENTION_DAYS=14 /opt/8west-analytics/operations/prune-backups.sh
 ```
 
-Local retention is not a substitute for an approved off-instance backup target.
+Local logical backups provide database-level recovery. EC2/EBS snapshots provide the approved infrastructure-level recovery layer before v1.0.
 
 ## Nightly timer
 
