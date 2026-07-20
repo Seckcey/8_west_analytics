@@ -58,30 +58,50 @@ properties:
       - contact_form_failed
 
   - business: Nexus Analytical Labs
-    product: Certificate of Analysis generator
+    product: Authenticated COA Vault and generator
     hostname: coa.nexusanalyticallabs.com
     environment: production
-    umami_property_id: pending_manual_creation
+    umami_property_id: 2f40bcd3-42a3-4ae7-84d0-94d3aa7c0eef
     owner: Frankie and Mary
-    privacy_classification: sensitive_workflow_aggregate_only
-    status: approved_pending_property_id_and_live_path_verification
+    privacy_classification: sensitive_authenticated_workflow_aggregate_only
+    status: implementation_ready_pending_live_service_verification
     integration_repository: Seckcey/coa_generator
+    integration_branch: analytics/umami-sanitized-pageviews
     source_reference_paths:
-      - app.py
-      - generate_coa.py
-    live_document_root: pending_verification
+      - public_html/wsgi.py
+      - public_html/analytics_integration.py
+      - public_html/assets/coa-analytics.js
+      - public_html/templates/base.html
+    live_application_directory: /var/www/coa.nexusanalytical.com/public_html
+    live_path_note: legacy_directory_name_does_not_match_public_hostname
+    live_service_candidates:
+      - coa-generator.service
+      - nexus-coa-generator.service
+    observed_proxy_target: http://127.0.0.1:8000
     tracker_configuration:
       script_url: https://analytics.8westventures.com/script.js
-      auto_track_pageviews: true
+      auto_track_pageviews: false
+      manual_sanitized_pageviews:
+        - /
+        - /login
+        - /register
+        - /account
+        - /admin/orders
+        - /order/payment
+        - /other
       allowed_domains:
         - coa.nexusanalyticallabs.com
       exclude_search_parameters: true
       exclude_hash_fragments: true
+      send_referrer: false
       session_replay: prohibited
       form_capture: prohibited
-      custom_event_attributes: none_for_initial_rollout
+      custom_events: prohibited_initial_rollout
+      session_identification: prohibited
     approved_custom_events: []
     forbidden_data:
+      - email_address
+      - authentication_state
       - client_name
       - company_name
       - compound_or_sample_name
@@ -96,6 +116,13 @@ properties:
       - upload_contents
       - generated_coa_number
       - generated_pdf_filename
+      - order_uuid
+      - payment_reference
+      - payment_url
+      - bitcoin_address
+      - transaction_id
+      - raw_route
+      - referrer
 
   - business: Nexus Analytical Labs
     product: Customer testing request website
@@ -103,17 +130,19 @@ properties:
     additional_hostnames:
       - www.nexusanalyticallabs.com
     environment: production
-    umami_property_id: pending_manual_creation
+    umami_property_id: 28a7129d-766b-4c54-a979-9a234e6be68d
     owner: Frankie and Mary
     privacy_classification: sensitive_request_workflow_aggregate_only
-    status: approved_pending_property_id_and_live_path_verification
+    status: approved_pending_source_implementation_and_nginx_block_verification
     integration_repository: Seckcey/nexus_analytical_labs
     source_reference_paths:
       - app.py
       - templates/base.html
       - templates/index.html
       - templates/payment.html
-    live_document_root: pending_verification
+    live_application_directory: /var/www/nexus_analytical_labs
+    live_service: nexus-analytical-labs.service
+    observed_service_bind: 172.17.0.1:8010
     tracker_configuration:
       script_url: https://analytics.8westventures.com/script.js
       auto_track_pageviews: false
@@ -125,6 +154,7 @@ properties:
         - www.nexusanalyticallabs.com
       exclude_search_parameters: true
       exclude_hash_fragments: true
+      send_referrer: false
       session_replay: prohibited
       form_capture: prohibited
       custom_event_attributes: allowlist_only
@@ -148,6 +178,8 @@ properties:
       - bitcoin_wallet
       - payment_proof_contents
       - exact_payment_url
+      - raw_route
+      - referrer
 
   - business: 8 West IT, LLC
     product: Public marketing website
@@ -155,10 +187,10 @@ properties:
     additional_hostnames:
       - www.8westit.com
     environment: production
-    umami_property_id: pending_manual_creation
+    umami_property_id: 55ff5195-9059-495e-a2fc-5a707081404d
     owner: Frankie and Mary
     privacy_classification: public_marketing_aggregate_only
-    status: approved_pending_property_id
+    status: approved_ready_for_source_implementation
     integration_repository: Seckcey/8westit-website
     source_reference_paths:
       - analytics.js
@@ -190,10 +222,10 @@ properties:
     product: Peptide research calculator
     hostname: calc.8westbio.com
     environment: production
-    umami_property_id: pending_manual_creation
+    umami_property_id: f67652d6-9b7b-46c5-a807-dd971150369e
     owner: Frankie and Mary
     privacy_classification: calculator_aggregate_only
-    status: approved_pending_property_id
+    status: approved_ready_for_source_implementation
     integration_repository: Seckcey/8westbio_pepcalc
     source_reference_paths:
       - index.html
