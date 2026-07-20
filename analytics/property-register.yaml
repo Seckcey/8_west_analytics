@@ -1,6 +1,46 @@
 schema_version: 1
 
-properties: []
+properties:
+  - business: 8 West Ventures, LLC
+    product: Corporate marketing website
+    hostname: 8westventures.com
+    additional_hostnames:
+      - www.8westventures.com
+    environment: production
+    umami_property_id: 508def7a-17a5-4510-a49b-a90c0cdafe76
+    owner: Frankie and Mary
+    privacy_classification: public_marketing_aggregate_only
+    status: implementation_complete_pending_merge_and_deploy
+    integration_repository: Seckcey/8west_hostgator_account_all
+    integration_branch: analytics/8westventures-canary
+    source_reference_paths:
+      - public_html/index.html
+      - public_html/assets/js/main.js
+    live_document_root: /srv/8west/www/8westventures.com/current/public
+    live_release_reference: /srv/8west/www/8westventures.com/releases/hostgator-20260717T121624Z/public
+    integration_commit: ee70e2c098b004414b5018248f6bace86ffc295b
+    analytics_deployment_artifact_commit: 033d377a572ed664a576c88330b369b1543ad08a
+    first_production_date: null
+    tracker_configuration:
+      script_url: https://analytics.8westventures.com/script.js
+      auto_track_pageviews: true
+      allowed_domains:
+        - 8westventures.com
+        - www.8westventures.com
+      exclude_search_parameters: true
+      exclude_hash_fragments: true
+      session_replay: prohibited
+      form_capture: prohibited
+      custom_event_attributes: allowlist_only
+    approved_custom_events:
+      - navigation_clicked
+      - consultation_button_clicked
+      - portfolio_link_clicked
+      - intranet_link_clicked
+      - contact_email_clicked
+      - contact_form_started
+      - contact_form_submitted
+      - contact_form_failed
 
 # Each property should record:
 # - business
