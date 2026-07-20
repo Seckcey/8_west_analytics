@@ -1,5 +1,5 @@
-# Proposed host-level Caddy configuration.
-# Do not deploy until DNS and infrastructure are approved.
+# Active host-level Caddy configuration for the pre-v1 analytics platform.
+# Caddy terminates HTTPS and proxies only to Umami's loopback binding.
 
 analytics.8westventures.com {
     encode zstd gzip
