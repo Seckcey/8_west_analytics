@@ -1,0 +1,16 @@
+schema_version: 1
+
+properties: []
+
+# Each property should record:
+# - business
+# - product
+# - hostname
+# - environment
+# - umami_property_id
+# - owner
+# - privacy_classification
+# - status
+# - integration_repository
+# - integration_commit
+# - first_production_date
