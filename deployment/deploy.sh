@@ -35,8 +35,18 @@ docker compose -f "$COMPOSE_FILE" up -d --remove-orphans
 
 echo "Waiting for health checks..."
 for attempt in $(seq 1 30); do
-  postgres_health="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' 8west-analytics-postgres-1 2>/dev/null || true)"
-  umami_health="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' 8west-analytics-umami-1 2>/dev/null || true)"
+  postgres_id="$(docker compose -f "$COMPOSE_FILE" ps -q postgres)"
+  umami_id="$(docker compose -f "$COMPOSE_FILE" ps -q umami)"
+  postgres_health=""
+  umami_health=""
+
+  if [[ -n "$postgres_id" ]]; then
+    postgres_health="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' "$postgres_id" 2>/dev/null || true)"
+  fi
+  if [[ -n "$umami_id" ]]; then
+    umami_health="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' "$umami_id" 2>/dev/null || true)"
+  fi
+
   if [[ "$postgres_health" == "healthy" && "$umami_health" == "healthy" ]]; then
     echo "Deployment healthy."
     docker compose -f "$COMPOSE_FILE" ps
