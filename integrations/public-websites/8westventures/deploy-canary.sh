@@ -9,6 +9,7 @@ RELEASES_DIR="$SITE_ROOT/releases"
 SOURCE_JS="${SOURCE_JS:-$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/main.js}"
 TIMESTAMP="$(date -u +%Y%m%dT%H%M%SZ)"
 NEW_RELEASE="$RELEASES_DIR/analytics-canary-$TIMESTAMP"
+BASELINE_RELEASE="$RELEASES_DIR/pre-canary-baseline-$TIMESTAMP"
 EXPECTED_WEBSITE_ID="508def7a-17a5-4510-a49b-a90c0cdafe76"
 PREVIOUS_RELEASE=""
 SWITCHED=0
@@ -23,15 +24,27 @@ cleanup() {
 }
 trap cleanup ERR
 
-[[ -L "$CURRENT_LINK" ]] || { echo "ERROR: $CURRENT_LINK is not a symlink." >&2; exit 1; }
 [[ -f "$SOURCE_JS" ]] || { echo "ERROR: missing reviewed source file $SOURCE_JS" >&2; exit 1; }
+install -d -m 0755 "$RELEASES_DIR"
 
-PREVIOUS_RELEASE="$(readlink -f "$CURRENT_LINK")"
+if [[ -L "$CURRENT_LINK" ]]; then
+  PREVIOUS_RELEASE="$(readlink -f "$CURRENT_LINK")"
+elif [[ -d "$CURRENT_LINK" ]]; then
+  echo "Converting migrated current directory into a preserved baseline release..."
+  [[ ! -e "$BASELINE_RELEASE" ]] || { echo "ERROR: baseline release already exists: $BASELINE_RELEASE" >&2; exit 1; }
+  mv "$CURRENT_LINK" "$BASELINE_RELEASE"
+  ln -s "$BASELINE_RELEASE" "$CURRENT_LINK"
+  PREVIOUS_RELEASE="$BASELINE_RELEASE"
+  echo "PASS: current directory preserved as $BASELINE_RELEASE"
+else
+  echo "ERROR: $CURRENT_LINK is neither a symlink nor a directory." >&2
+  exit 1
+fi
+
 [[ -d "$PREVIOUS_RELEASE" ]] || { echo "ERROR: current release target is invalid." >&2; exit 1; }
 [[ -f "$PREVIOUS_RELEASE/public/index.html" ]] || { echo "ERROR: current index.html is missing." >&2; exit 1; }
 [[ -f "$PREVIOUS_RELEASE/public/assets/js/main.js" ]] || { echo "ERROR: current main.js is missing." >&2; exit 1; }
 
-install -d -m 0755 "$RELEASES_DIR"
 cp -a "$PREVIOUS_RELEASE" "$NEW_RELEASE"
 install -m 0644 -o root -g root "$SOURCE_JS" "$NEW_RELEASE/public/assets/js/main.js"
 
@@ -89,4 +102,4 @@ trap - ERR
 echo "PASS: 8westventures.com analytics canary release activated"
 echo "previous_release=$PREVIOUS_RELEASE"
 echo "current_release=$NEW_RELEASE"
-echo "rollback_command=ln -sfn '$PREVIOUS_RELEASE' '$CURRENT_LINK'"
+echo "rollback_command=ln -s '$PREVIOUS_RELEASE' '$CURRENT_LINK.rollback' && mv -Tf '$CURRENT_LINK.rollback' '$CURRENT_LINK'"
