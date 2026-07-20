@@ -4,7 +4,9 @@ Self-hosted, privacy-conscious analytics infrastructure and governance for websi
 
 ## Status
 
-Architecture and planning phase. No production infrastructure is deployed from this repository yet.
+The dedicated pre-v1 Umami platform is deployed at `analytics.8westventures.com` on AWS EC2. HTTPS, private PostgreSQL networking, reboot recovery, nightly logical backups, checksums, and disposable restore validation have passed.
+
+No production website or application analytics integrations are approved or deployed yet. The platform remains pre-v1, and downtime is acceptable until Frankie and Mary approve launch.
 
 ## Governance
 
