@@ -2,7 +2,7 @@
 
 ## Status
 
-Approved for implementation. The Umami production property and live Apache deployment path are verified.
+Production canary active and validated on July 20, 2026.
 
 ## Verified deployment facts
 
@@ -10,13 +10,14 @@ Approved for implementation. The Umami production property and live Apache deplo
 - Tracker URL: `https://analytics.8westventures.com/script.js`
 - Production hostnames: `8westventures.com`, `www.8westventures.com`
 - Apache document root: `/srv/8west/www/8westventures.com/current/public`
-- Current release: `/srv/8west/www/8westventures.com/releases/hostgator-20260717T121624Z/public`
+- Prior baseline release: `/srv/8west/www/8westventures.com/releases/hostgator-20260717T121624Z`
+- Active release naming pattern: `/srv/8west/www/8westventures.com/releases/analytics-canary-*`
+- Exact active release timestamp was not captured in this acceptance record.
 - Source repository: `Seckcey/8west_hostgator_account_all`
-- Source paths:
-  - `public_html/index.html`
-  - `public_html/assets/js/main.js`
-
-The source contains a single-page corporate website, same-page navigation, links to the employee intranet and 8 West IT, direct email links, and a Web3Forms contact form.
+- Integration commit: `ee70e2c098b004414b5018248f6bace86ffc295b`
+- Integration merge commit: `173240d672b876fd813b98073fce973d1669fb7b`
+- Analytics governance merge commit: `75938ec0147720d9f71b509d2aac7ee189f1a2e6`
+- Deployment-layout fix merge commit: `5e680f256f13af4e526ebc5860a1966d0f3b3115`
 
 ## Tracking scope
 
@@ -46,30 +47,30 @@ Do not transmit:
 
 Only categorical values declared in `analytics/event-dictionary.yaml` may be attached.
 
-## Implementation design
+## Implemented design
 
-1. Load the Umami tracker asynchronously from the site's existing `assets/js/main.js`.
-2. Set the website ID and restrict tracking to the two production hostnames.
-3. Exclude search parameters and hash fragments.
-4. Use a single guarded click classifier with hard-coded categorical values for approved links.
-5. Fire `contact_form_started` once on the first genuine interaction with a non-honeypot field.
-6. Fire `contact_form_submitted` only after Web3Forms returns success.
-7. Fire `contact_form_failed` with only `provider_rejected` or `network_error`.
-8. Guard and queue manual tracking calls so an unavailable or blocked analytics script cannot affect site behavior.
+1. The site loads the Umami tracker asynchronously from its existing `assets/js/main.js`.
+2. Tracking is restricted to the two production hostnames.
+3. Search parameters and hash fragments are excluded.
+4. A guarded click classifier emits only approved categorical values.
+5. `contact_form_started` fires once on the first genuine interaction with a non-honeypot field.
+6. `contact_form_submitted` fires only after Web3Forms returns success.
+7. `contact_form_failed` uses only `provider_rejected` or `network_error`.
+8. Manual tracking calls are guarded and queued so an unavailable or blocked analytics script cannot affect site behavior.
 
-## Acceptance checks
+## Acceptance result
 
-- site works with the analytics host blocked;
-- tracker loads asynchronously;
-- page views appear only in the production property;
-- no search parameters or hashes appear in tracked paths;
-- every approved click fires once;
-- form start fires once per page load;
-- successful form submission fires only after provider confirmation;
-- failures contain only `provider_rejected` or `network_error`;
-- browser network inspection shows no form contents or identifying values sent to Umami;
-- removal requires only reverting the `main.js` analytics block.
+Frankie completed the browser acceptance test and confirmed the canary validated on July 20, 2026.
+
+Accepted evidence:
+
+- production page views appeared in the correct Umami property;
+- approved custom events appeared;
+- `contact_form_started` fired once;
+- browser network inspection showed no name, email, company, message, form content, query string, hash, or identifying value in analytics requests;
+- website navigation and contact-form behavior remained functional;
+- analytics remained fail-open.
 
 ## Rollback
 
-Restore the prior `assets/js/main.js` from the current release or switch the `current` symlink back to the prior release. No application database, Apache, Caddy, or Umami server rollback is required.
+Switch `/srv/8west/www/8westventures.com/current` back to the prior baseline release or restore the prior `assets/js/main.js`. No application database, Apache, Caddy, DNS, or Umami server rollback is required.
