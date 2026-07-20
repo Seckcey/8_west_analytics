@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+[[ "${EUID}" -eq 0 ]] || { echo "ERROR: run as root." >&2; exit 1; }
+
 APP_DIR="${APP_DIR:-/opt/8west-analytics}"
 COMPOSE_FILE="$APP_DIR/compose.yaml"
 
