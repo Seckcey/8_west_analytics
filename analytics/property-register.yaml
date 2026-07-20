@@ -64,7 +64,7 @@ properties:
     umami_property_id: 2f40bcd3-42a3-4ae7-84d0-94d3aa7c0eef
     owner: Frankie and Mary
     privacy_classification: sensitive_authenticated_workflow_aggregate_only
-    status: implementation_ready_pending_live_service_verification
+    status: source_validated_production_drift_blocked
     integration_repository: Seckcey/coa_generator
     integration_branch: analytics/umami-sanitized-pageviews
     source_reference_paths:
@@ -77,7 +77,10 @@ properties:
     live_service_candidates:
       - coa-generator.service
       - nexus-coa-generator.service
-    observed_proxy_target: http://127.0.0.1:8000
+    observed_service_binds:
+      - 127.0.0.1:8000
+      - 172.17.0.1:8000
+    proxy_platform: nginx_proxy_manager_container
     tracker_configuration:
       script_url: https://analytics.8westventures.com/script.js
       auto_track_pageviews: false
@@ -133,22 +136,24 @@ properties:
     umami_property_id: 28a7129d-766b-4c54-a979-9a234e6be68d
     owner: Frankie and Mary
     privacy_classification: sensitive_request_workflow_aggregate_only
-    status: approved_pending_source_implementation_and_nginx_block_verification
+    status: source_validated_production_drift_blocked
     integration_repository: Seckcey/nexus_analytical_labs
+    integration_branch: analytics/umami-sanitized-workflow
     source_reference_paths:
-      - app.py
-      - templates/base.html
-      - templates/index.html
-      - templates/payment.html
+      - analytics_integration.py
+      - static/js/analytics.js
+      - wsgi.py
     live_application_directory: /var/www/nexus_analytical_labs
     live_service: nexus-analytical-labs.service
     observed_service_bind: 172.17.0.1:8010
+    proxy_platform: nginx_proxy_manager_container
     tracker_configuration:
       script_url: https://analytics.8westventures.com/script.js
       auto_track_pageviews: false
       manual_sanitized_pageviews:
         - /
         - /payment
+        - /other
       allowed_domains:
         - nexusanalyticallabs.com
         - www.nexusanalyticallabs.com
@@ -190,8 +195,9 @@ properties:
     umami_property_id: 55ff5195-9059-495e-a2fc-5a707081404d
     owner: Frankie and Mary
     privacy_classification: public_marketing_aggregate_only
-    status: approved_ready_for_source_implementation
+    status: active_production_validated
     integration_repository: Seckcey/8westit-website
+    integration_merge_commit: 9ee0b36862babbc33ca122f4798e1836700f8632
     source_reference_paths:
       - analytics.js
       - index.html
@@ -200,6 +206,19 @@ properties:
       - privacy.html
       - 404.html
     live_document_root: /srv/8west/www/8westit.com/current/public
+    first_production_date: 2026-07-20
+    validation_date: 2026-07-20
+    validation_status: passed
+    validation_evidence:
+      - production_pageview_observed
+      - consultation_button_clicked_observed
+      - contact_email_clicked_observed
+      - milepost_login_clicked_observed
+      - service_link_clicked_observed
+      - blog_link_clicked_observed
+      - no_complete_urls_email_addresses_query_strings_or_freeform_link_text_observed
+      - website_behavior_remained_functional
+      - tracker_failure_boundary_confirmed_fail_open
     tracker_configuration:
       script_url: https://analytics.8westventures.com/script.js
       auto_track_pageviews: true
@@ -225,12 +244,16 @@ properties:
     umami_property_id: f67652d6-9b7b-46c5-a807-dd971150369e
     owner: Frankie and Mary
     privacy_classification: calculator_aggregate_only
-    status: approved_ready_for_source_implementation
+    status: source_merged_artifact_ready_pending_deployment
     integration_repository: Seckcey/8westbio_pepcalc
+    integration_merge_commit: daad4ca14d438bcb5898cfa1f072c160dd6cff8f
+    artifact_workflow_merge_commit: 58064cb9959a7720637154479af7606ccecb168b
+    deployment_artifact_source_commit: faae50935a00e9c291506b6aedffb743977deb9b
+    deployment_artifact_digest: sha256:258fd225650ea04bac62af030021136a5db403d837299261b974b91984af9e94
     source_reference_paths:
       - index.html
       - src/main.tsx
-      - src/App.tsx
+      - src/analytics.ts
     live_document_root: /srv/8west/www/calc.8westbio.com/current/public
     tracker_configuration:
       script_url: https://analytics.8westventures.com/script.js
