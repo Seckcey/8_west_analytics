@@ -1,4 +1,5 @@
-# Proposed configuration only. Do not deploy until DNS and infrastructure are approved.
+# Proposed host-level Caddy configuration.
+# Do not deploy until DNS and infrastructure are approved.
 
 analytics.8westventures.com {
     encode zstd gzip
@@ -10,5 +11,5 @@ analytics.8westventures.com {
         -Server
     }
 
-    reverse_proxy umami:3000
+    reverse_proxy 127.0.0.1:3000
 }
