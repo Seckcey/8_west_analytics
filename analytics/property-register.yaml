@@ -7,18 +7,21 @@ properties:
     additional_hostnames:
       - www.8westventures.com
     environment: production
-    umami_property_id: pending_manual_creation
+    umami_property_id: 508def7a-17a5-4510-a49b-a90c0cdafe76
     owner: Frankie and Mary
     privacy_classification: public_marketing_aggregate_only
-    status: approved_pending_property_id_and_deployment_path_verification
-    integration_repository: pending_active_source_repository_confirmation
-    source_reference_repository: Seckcey/8west_hostgator_account_all
+    status: approved_for_canary_implementation
+    integration_repository: Seckcey/8west_hostgator_account_all
+    integration_branch: analytics/8westventures-canary
     source_reference_paths:
       - public_html/index.html
       - public_html/assets/js/main.js
+    live_document_root: /srv/8west/www/8westventures.com/current/public
+    live_release_reference: /srv/8west/www/8westventures.com/releases/hostgator-20260717T121624Z/public
     integration_commit: null
     first_production_date: null
     tracker_configuration:
+      script_url: https://analytics.8westventures.com/script.js
       auto_track_pageviews: true
       allowed_domains:
         - 8westventures.com
