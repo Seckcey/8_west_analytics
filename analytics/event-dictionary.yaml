@@ -1,20 +1,229 @@
 schema_version: 1
 
-events: []
+events:
+  - name: navigation_clicked
+    application: 8westventures.com
+    purpose: Measure use of the primary and footer navigation without recording destination URLs.
+    trigger: A visitor activates an approved same-page navigation link.
+    approved_attributes:
+      - target_section
+      - source_area
+      - environment
+    forbidden_attributes:
+      - full_url
+      - query_string
+      - hash_value
+      - link_text_freeform
+      - visitor_identifier
+      - form_data
+    environment_behavior:
+      production: send_to_production_property
+      staging: send_to_separate_staging_property
+      development: disabled_by_default
+    owner: Frankie and Mary
+    retention_expectation: platform_default_pending_final_retention_decision
+    validation_method:
+      - browser_network_inspection
+      - single_fire_click_test
+      - approved_attribute_allowlist_check
+    status: approved
 
-# Every proposed event must define:
-# - name
-# - application
-# - purpose
-# - trigger
-# - approved_attributes
-# - forbidden_attributes
-# - environment_behavior
-# - owner
-# - retention_expectation
-# - validation_method
-# - status
-#
+  - name: consultation_button_clicked
+    application: 8westventures.com
+    purpose: Measure interest in starting a conversation with 8 West Ventures.
+    trigger: A visitor activates the hero Start a Conversation call to action.
+    approved_attributes:
+      - source_area
+      - destination
+      - environment
+    forbidden_attributes:
+      - full_url
+      - query_string
+      - hash_value
+      - visitor_identifier
+      - form_data
+    environment_behavior:
+      production: send_to_production_property
+      staging: send_to_separate_staging_property
+      development: disabled_by_default
+    owner: Frankie and Mary
+    retention_expectation: platform_default_pending_final_retention_decision
+    validation_method:
+      - browser_network_inspection
+      - single_fire_click_test
+      - approved_attribute_allowlist_check
+    status: approved
+
+  - name: portfolio_link_clicked
+    application: 8westventures.com
+    purpose: Measure anonymous interest in approved portfolio businesses.
+    trigger: A visitor activates an approved portfolio-company link.
+    approved_attributes:
+      - portfolio_name
+      - destination_category
+      - source_area
+      - environment
+    forbidden_attributes:
+      - full_url
+      - query_string
+      - hash_value
+      - visitor_identifier
+      - customer_data
+    environment_behavior:
+      production: send_to_production_property
+      staging: send_to_separate_staging_property
+      development: disabled_by_default
+    owner: Frankie and Mary
+    retention_expectation: platform_default_pending_final_retention_decision
+    validation_method:
+      - browser_network_inspection
+      - single_fire_click_test
+      - approved_value_allowlist_check
+    status: approved
+
+  - name: intranet_link_clicked
+    application: 8westventures.com
+    purpose: Measure anonymous use of public links leading to the restricted employee intranet.
+    trigger: A visitor activates an approved Employee Intranet link.
+    approved_attributes:
+      - source_area
+      - environment
+    forbidden_attributes:
+      - tenant_id
+      - user_identity
+      - email_address
+      - full_url
+      - query_string
+      - authentication_data
+    environment_behavior:
+      production: send_to_production_property
+      staging: send_to_separate_staging_property
+      development: disabled_by_default
+    owner: Frankie and Mary
+    retention_expectation: platform_default_pending_final_retention_decision
+    validation_method:
+      - browser_network_inspection
+      - single_fire_click_test
+      - approved_attribute_allowlist_check
+    status: approved
+
+  - name: contact_email_clicked
+    application: 8westventures.com
+    purpose: Measure anonymous use of the direct email contact link.
+    trigger: A visitor activates an approved mailto link.
+    approved_attributes:
+      - source_area
+      - environment
+    forbidden_attributes:
+      - email_address
+      - email_subject
+      - email_body
+      - visitor_identifier
+      - full_url
+    environment_behavior:
+      production: send_to_production_property
+      staging: send_to_separate_staging_property
+      development: disabled_by_default
+    owner: Frankie and Mary
+    retention_expectation: platform_default_pending_final_retention_decision
+    validation_method:
+      - browser_network_inspection
+      - single_fire_click_test
+      - approved_attribute_allowlist_check
+    status: approved
+
+  - name: contact_form_started
+    application: 8westventures.com
+    purpose: Measure the number of visitors who begin interacting with the public contact form.
+    trigger: The first genuine focus or input interaction with a non-honeypot contact-form field during a page load.
+    approved_attributes:
+      - form_type
+      - source_area
+      - environment
+    forbidden_attributes:
+      - name
+      - email
+      - company
+      - message
+      - form_contents
+      - web3forms_access_key
+      - visitor_identifier
+    environment_behavior:
+      production: send_to_production_property
+      staging: send_to_separate_staging_property
+      development: disabled_by_default
+    owner: Frankie and Mary
+    retention_expectation: platform_default_pending_final_retention_decision
+    validation_method:
+      - browser_network_inspection
+      - first_interaction_once_test
+      - form_value_leak_test
+    status: approved
+
+  - name: contact_form_submitted
+    application: 8westventures.com
+    purpose: Measure contact forms confirmed as successfully accepted by the form provider.
+    trigger: Web3Forms returns a successful response for the contact form.
+    approved_attributes:
+      - form_type
+      - result
+      - environment
+    forbidden_attributes:
+      - name
+      - email
+      - company
+      - message
+      - form_contents
+      - web3forms_access_key
+      - provider_response_body
+      - visitor_identifier
+    environment_behavior:
+      production: send_to_production_property
+      staging: send_to_separate_staging_property
+      development: disabled_by_default
+    owner: Frankie and Mary
+    retention_expectation: platform_default_pending_final_retention_decision
+    validation_method:
+      - browser_network_inspection
+      - successful_provider_response_test
+      - form_value_leak_test
+    status: approved
+
+  - name: contact_form_failed
+    application: 8westventures.com
+    purpose: Measure anonymous contact-form failure categories without collecting provider or visitor details.
+    trigger: Web3Forms rejects the request or the browser encounters a network failure.
+    approved_attributes:
+      - form_type
+      - error_class
+      - environment
+    approved_attribute_values:
+      error_class:
+        - provider_rejected
+        - network_error
+    forbidden_attributes:
+      - name
+      - email
+      - company
+      - message
+      - form_contents
+      - web3forms_access_key
+      - provider_response_body
+      - exception_message
+      - visitor_identifier
+    environment_behavior:
+      production: send_to_production_property
+      staging: send_to_separate_staging_property
+      development: disabled_by_default
+    owner: Frankie and Mary
+    retention_expectation: platform_default_pending_final_retention_decision
+    validation_method:
+      - browser_network_inspection
+      - provider_rejection_test
+      - network_failure_test
+      - form_value_leak_test
+    status: approved
+
 # Event names must use lowercase snake_case.
 # Events involving identifiers, authentication, healthcare, email, customer,
 # device, or financial data require explicit privacy review before implementation.
