@@ -1,0 +1,39 @@
+# Secrets and environment files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+secrets/
+
+# Backups and exports
+backups/
+*.dump
+*.sql
+*.sql.gz
+*.tar
+*.tar.gz
+*.zip
+exports/
+
+# Runtime data
+postgres-data/
+caddy-data/
+logs/
+*.log
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Temporary files
+*.tmp
+*.swp

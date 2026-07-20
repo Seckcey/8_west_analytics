@@ -1,0 +1,11 @@
+[Unit]
+Description=Run 8 West Analytics PostgreSQL backup nightly
+
+[Timer]
+OnCalendar=*-*-* 03:15:00 UTC
+Persistent=true
+RandomizedDelaySec=15m
+Unit=8west-analytics-backup.service
+
+[Install]
+WantedBy=timers.target

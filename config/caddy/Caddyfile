@@ -1,0 +1,15 @@
+# Active host-level Caddy configuration for the pre-v1 analytics platform.
+# Caddy terminates HTTPS and proxies only to Umami's loopback binding.
+
+analytics.8westventures.com {
+    encode zstd gzip
+
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Content-Type-Options "nosniff"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        -Server
+    }
+
+    reverse_proxy 127.0.0.1:3000
+}

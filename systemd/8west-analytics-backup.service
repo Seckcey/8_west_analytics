@@ -1,0 +1,21 @@
+[Unit]
+Description=8 West Analytics PostgreSQL backup
+Requires=docker.service
+After=docker.service network-online.target
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+WorkingDirectory=/opt/8west-analytics
+ExecStart=/opt/8west-analytics/operations/backup-postgres.sh
+ExecStartPost=/opt/8west-analytics/operations/prune-backups.sh
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+PrivateTmp=true
+ProtectHome=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
