@@ -1,0 +1,235 @@
+schema_version: 1
+batch: portfolio_batch_2
+
+events:
+  - name: testing_request_started
+    application: nexusanalyticallabs.com
+    purpose: Measure anonymous starts of the customer testing request form.
+    trigger: First genuine interaction with a non-hidden request field.
+    approved_attributes:
+      - form_type
+      - source_area
+      - environment
+    forbidden_attributes:
+      - request_number
+      - client_name
+      - company
+      - email
+      - phone
+      - compound_name
+      - lot_batch
+      - quantity
+      - intended_use
+      - notes
+      - selected_tests
+      - total
+      - form_contents
+    status: approved
+
+  - name: testing_request_submit_attempted
+    application: nexusanalyticallabs.com
+    purpose: Measure anonymous submission attempts without claiming server acceptance.
+    trigger: A valid browser form submit is initiated.
+    approved_attributes:
+      - form_type
+      - environment
+    forbidden_attributes:
+      - request_number
+      - client_name
+      - company
+      - email
+      - phone
+      - compound_name
+      - lot_batch
+      - quantity
+      - intended_use
+      - notes
+      - selected_tests
+      - total
+      - form_contents
+    status: approved
+
+  - name: payment_proof_email_clicked
+    application: nexusanalyticallabs.com
+    purpose: Measure anonymous use of the proof-of-payment email action.
+    trigger: Visitor activates the approved proof email link.
+    approved_attributes:
+      - source_area
+      - environment
+    forbidden_attributes:
+      - request_number
+      - email_address
+      - email_subject
+      - email_body
+      - selected_tests
+      - total
+      - bitcoin_wallet
+      - full_url
+    status: approved
+
+  - name: consultation_button_clicked
+    application: 8westit.com
+    purpose: Measure anonymous consultation interest.
+    trigger: Visitor activates an approved consultation CTA.
+    approved_attributes:
+      - source_area
+      - environment
+    forbidden_attributes:
+      - full_url
+      - link_text_freeform
+      - email_address
+      - visitor_identifier
+    status: approved
+
+  - name: contact_email_clicked
+    application: 8westit.com
+    purpose: Measure anonymous direct-email interest.
+    trigger: Visitor activates an approved mailto link.
+    approved_attributes:
+      - source_area
+      - environment
+    forbidden_attributes:
+      - email_address
+      - email_subject
+      - email_body
+      - full_url
+      - visitor_identifier
+    status: approved
+
+  - name: milepost_login_clicked
+    application: 8westit.com
+    purpose: Measure anonymous traffic from the public site to Milepost login.
+    trigger: Visitor activates an approved support.8westit.com login link.
+    approved_attributes:
+      - source_area
+      - environment
+    forbidden_attributes:
+      - full_url
+      - query_string
+      - authentication_data
+      - visitor_identifier
+    status: approved
+
+  - name: service_link_clicked
+    application: 8westit.com
+    purpose: Measure anonymous interest in service and service-area pages.
+    trigger: Visitor activates an approved service navigation link.
+    approved_attributes:
+      - destination_category
+      - source_area
+      - environment
+    approved_attribute_values:
+      destination_category:
+        - services
+        - service_area
+        - security
+    forbidden_attributes:
+      - full_url
+      - query_string
+      - link_text_freeform
+      - visitor_identifier
+    status: approved
+
+  - name: blog_link_clicked
+    application: 8westit.com
+    purpose: Measure anonymous movement into the public blog.
+    trigger: Visitor activates an approved blog link.
+    approved_attributes:
+      - source_area
+      - environment
+    forbidden_attributes:
+      - article_title
+      - full_url
+      - query_string
+      - visitor_identifier
+    status: approved
+
+  - name: calculator_used
+    application: calc.8westbio.com
+    purpose: Measure anonymous calculator engagement after valid inputs produce a result.
+    trigger: First valid calculation during a page load.
+    approved_attributes:
+      - calculator_type
+      - environment
+    forbidden_attributes:
+      - peptide_amount
+      - water_volume
+      - desired_dose
+      - dose_unit
+      - syringe_id
+      - concentration
+      - draw_volume
+      - syringe_units
+      - doses_per_vial
+      - remaining_amount
+    status: approved
+
+  - name: preset_applied
+    application: calc.8westbio.com
+    purpose: Measure anonymous use of a saved or starter preset.
+    trigger: Visitor applies a preset.
+    approved_attributes:
+      - preset_category
+      - environment
+    approved_attribute_values:
+      preset_category:
+        - starter
+        - user_saved
+    forbidden_attributes:
+      - preset_id
+      - peptide_amount
+      - water_volume
+      - desired_dose
+      - syringe_id
+      - stored_values
+    status: approved
+
+  - name: preset_saved
+    application: calc.8westbio.com
+    purpose: Measure anonymous use of local preset saving.
+    trigger: A valid preset is saved locally.
+    approved_attributes:
+      - environment
+    forbidden_attributes:
+      - preset_id
+      - peptide_amount
+      - water_volume
+      - desired_dose
+      - syringe_id
+      - stored_values
+    status: approved
+
+  - name: results_copied
+    application: calc.8westbio.com
+    purpose: Measure anonymous use of the copy-results feature.
+    trigger: Result summary is copied successfully.
+    approved_attributes:
+      - environment
+    forbidden_attributes:
+      - copied_text
+      - peptide_amount
+      - water_volume
+      - desired_dose
+      - calculation_results
+    status: approved
+
+  - name: theme_changed
+    application: calc.8westbio.com
+    purpose: Measure coarse interface-theme preference.
+    trigger: Visitor selects a theme option.
+    approved_attributes:
+      - theme_mode
+      - environment
+    approved_attribute_values:
+      theme_mode:
+        - light
+        - dark
+        - system
+    forbidden_attributes:
+      - system_details
+      - visitor_identifier
+    status: approved
+
+# coa.nexusanalyticallabs.com starts with page views only.
+# No custom COA events are approved in the initial rollout because the workflow
+# contains client, sample, lot, result, note, upload, and generated-document data.

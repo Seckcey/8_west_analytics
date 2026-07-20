@@ -1,0 +1,43 @@
+schema_version: 1
+acceptance:
+  business: 8 West Bio
+  product: Peptide research calculator
+  hostname: calc.8westbio.com
+  environment: production
+  validation_date: 2026-07-20
+  validation_status: passed
+  umami_property_id: f67652d6-9b7b-46c5-a807-dd971150369e
+  integration_repository: Seckcey/8westbio_pepcalc
+  integration_merge_commit: daad4ca14d438bcb5898cfa1f072c160dd6cff8f
+  artifact_workflow_merge_commit: 58064cb9959a7720637154479af7606ccecb168b
+  deployment_artifact_source_commit: c7bcb492411726263d7ccc3366542896fee5d569
+  deployment_artifact_digest: sha256:258fd225650ea04bac62af030021136a5db403d837299261b974b91984af9e94
+  live_document_root: /srv/8west/www/calc.8westbio.com/current/public
+  active_release: /srv/8west/www/calc.8westbio.com/releases/analytics-20260720T103136Z
+  rollback_release: /srv/8west/www/calc.8westbio.com/releases/hostgator-20260717T121624Z
+  javascript_asset: /assets/index-jQQ-Fuzb.js
+  validation_evidence:
+    - production_pageview_observed
+    - calculator_used_observed
+    - preset_applied_observed
+    - preset_saved_observed
+    - results_copied_observed
+    - theme_changed_observed
+    - only_approved_coarse_event_attributes_observed
+    - no_calculator_inputs_results_preset_values_or_identifiers_observed
+    - calculator_behavior_remained_functional
+    - exact_outer_artifact_digest_verified
+    - exact_internal_file_checksums_verified
+    - apache_configuration_validated
+    - live_property_id_validated
+  privacy_contract:
+    session_replay: prohibited
+    form_capture: prohibited
+    session_identification: prohibited
+    custom_event_attributes: categorical_only
+  approved_custom_events:
+    - calculator_used
+    - preset_applied
+    - preset_saved
+    - results_copied
+    - theme_changed

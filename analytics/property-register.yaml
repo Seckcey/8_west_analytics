@@ -57,6 +57,231 @@ properties:
       - contact_form_submitted
       - contact_form_failed
 
+  - business: Nexus Analytical Labs
+    product: Authenticated COA Vault and generator
+    hostname: coa.nexusanalyticallabs.com
+    environment: production
+    umami_property_id: 2f40bcd3-42a3-4ae7-84d0-94d3aa7c0eef
+    owner: Frankie and Mary
+    privacy_classification: sensitive_authenticated_workflow_aggregate_only
+    status: source_validated_production_drift_blocked
+    integration_repository: Seckcey/coa_generator
+    integration_branch: analytics/umami-sanitized-pageviews
+    source_reference_paths:
+      - public_html/wsgi.py
+      - public_html/analytics_integration.py
+      - public_html/assets/coa-analytics.js
+      - public_html/templates/base.html
+    live_application_directory: /var/www/coa.nexusanalytical.com/public_html
+    live_path_note: legacy_directory_name_does_not_match_public_hostname
+    live_service_candidates:
+      - coa-generator.service
+      - nexus-coa-generator.service
+    observed_service_binds:
+      - 127.0.0.1:8000
+      - 172.17.0.1:8000
+    proxy_platform: nginx_proxy_manager_container
+    tracker_configuration:
+      script_url: https://analytics.8westventures.com/script.js
+      auto_track_pageviews: false
+      manual_sanitized_pageviews:
+        - /
+        - /login
+        - /register
+        - /account
+        - /admin/orders
+        - /order/payment
+        - /other
+      allowed_domains:
+        - coa.nexusanalyticallabs.com
+      exclude_search_parameters: true
+      exclude_hash_fragments: true
+      send_referrer: false
+      session_replay: prohibited
+      form_capture: prohibited
+      custom_events: prohibited_initial_rollout
+      session_identification: prohibited
+    approved_custom_events: []
+    forbidden_data:
+      - email_address
+      - authentication_state
+      - client_name
+      - company_name
+      - compound_or_sample_name
+      - lot_or_batch_number
+      - identity_confirmation
+      - test_dates
+      - purity
+      - assay
+      - selected_add_on_tests
+      - notes
+      - upload_filenames
+      - upload_contents
+      - generated_coa_number
+      - generated_pdf_filename
+      - order_uuid
+      - payment_reference
+      - payment_url
+      - bitcoin_address
+      - transaction_id
+      - raw_route
+      - referrer
+
+  - business: Nexus Analytical Labs
+    product: Customer testing request website
+    hostname: nexusanalyticallabs.com
+    additional_hostnames:
+      - www.nexusanalyticallabs.com
+    environment: production
+    umami_property_id: 28a7129d-766b-4c54-a979-9a234e6be68d
+    owner: Frankie and Mary
+    privacy_classification: sensitive_request_workflow_aggregate_only
+    status: source_validated_production_drift_blocked
+    integration_repository: Seckcey/nexus_analytical_labs
+    integration_branch: analytics/umami-sanitized-workflow
+    source_reference_paths:
+      - analytics_integration.py
+      - static/js/analytics.js
+      - wsgi.py
+    live_application_directory: /var/www/nexus_analytical_labs
+    live_service: nexus-analytical-labs.service
+    observed_service_bind: 172.17.0.1:8010
+    proxy_platform: nginx_proxy_manager_container
+    tracker_configuration:
+      script_url: https://analytics.8westventures.com/script.js
+      auto_track_pageviews: false
+      manual_sanitized_pageviews:
+        - /
+        - /payment
+        - /other
+      allowed_domains:
+        - nexusanalyticallabs.com
+        - www.nexusanalyticallabs.com
+      exclude_search_parameters: true
+      exclude_hash_fragments: true
+      send_referrer: false
+      session_replay: prohibited
+      form_capture: prohibited
+      custom_event_attributes: allowlist_only
+    approved_custom_events:
+      - testing_request_started
+      - testing_request_submit_attempted
+      - payment_proof_email_clicked
+    forbidden_data:
+      - request_number
+      - client_name
+      - company
+      - email
+      - phone
+      - compound_name
+      - lot_batch
+      - quantity
+      - intended_use
+      - notes
+      - selected_tests
+      - total
+      - bitcoin_wallet
+      - payment_proof_contents
+      - exact_payment_url
+      - raw_route
+      - referrer
+
+  - business: 8 West IT, LLC
+    product: Public marketing website
+    hostname: 8westit.com
+    additional_hostnames:
+      - www.8westit.com
+    environment: production
+    umami_property_id: 55ff5195-9059-495e-a2fc-5a707081404d
+    owner: Frankie and Mary
+    privacy_classification: public_marketing_aggregate_only
+    status: active_production_validated
+    integration_repository: Seckcey/8westit-website
+    integration_merge_commit: 9ee0b36862babbc33ca122f4798e1836700f8632
+    source_reference_paths:
+      - analytics.js
+      - index.html
+      - services.html
+      - service-area.html
+      - privacy.html
+      - 404.html
+    live_document_root: /srv/8west/www/8westit.com/current/public
+    first_production_date: 2026-07-20
+    validation_date: 2026-07-20
+    validation_status: passed
+    validation_evidence:
+      - production_pageview_observed
+      - consultation_button_clicked_observed
+      - contact_email_clicked_observed
+      - milepost_login_clicked_observed
+      - service_link_clicked_observed
+      - blog_link_clicked_observed
+      - no_complete_urls_email_addresses_query_strings_or_freeform_link_text_observed
+      - website_behavior_remained_functional
+      - tracker_failure_boundary_confirmed_fail_open
+    tracker_configuration:
+      script_url: https://analytics.8westventures.com/script.js
+      auto_track_pageviews: true
+      allowed_domains:
+        - 8westit.com
+        - www.8westit.com
+      exclude_search_parameters: true
+      exclude_hash_fragments: true
+      session_replay: prohibited
+      form_capture: prohibited
+      custom_event_attributes: allowlist_only
+    approved_custom_events:
+      - consultation_button_clicked
+      - contact_email_clicked
+      - milepost_login_clicked
+      - service_link_clicked
+      - blog_link_clicked
+
+  - business: 8 West Bio
+    product: Peptide research calculator
+    hostname: calc.8westbio.com
+    environment: production
+    umami_property_id: f67652d6-9b7b-46c5-a807-dd971150369e
+    owner: Frankie and Mary
+    privacy_classification: calculator_aggregate_only
+    status: source_merged_artifact_ready_pending_deployment
+    integration_repository: Seckcey/8westbio_pepcalc
+    integration_merge_commit: daad4ca14d438bcb5898cfa1f072c160dd6cff8f
+    artifact_workflow_merge_commit: 58064cb9959a7720637154479af7606ccecb168b
+    deployment_artifact_source_commit: faae50935a00e9c291506b6aedffb743977deb9b
+    deployment_artifact_digest: sha256:258fd225650ea04bac62af030021136a5db403d837299261b974b91984af9e94
+    source_reference_paths:
+      - index.html
+      - src/main.tsx
+      - src/analytics.ts
+    live_document_root: /srv/8west/www/calc.8westbio.com/current/public
+    tracker_configuration:
+      script_url: https://analytics.8westventures.com/script.js
+      auto_track_pageviews: true
+      allowed_domains:
+        - calc.8westbio.com
+      exclude_search_parameters: true
+      exclude_hash_fragments: true
+      session_replay: prohibited
+      form_capture: prohibited
+      custom_event_attributes: categorical_only
+    approved_custom_events:
+      - calculator_used
+      - preset_applied
+      - preset_saved
+      - results_copied
+      - theme_changed
+    forbidden_data:
+      - peptide_amount
+      - water_volume
+      - desired_dose
+      - syringe_capacity
+      - calculated_concentration
+      - draw_volume
+      - syringe_units
+      - doses_per_vial
+      - saved_preset_values
+
 # Each property should record:
 # - business
 # - product
