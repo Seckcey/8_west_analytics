@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+[[ "${EUID}" -eq 0 ]] || { echo "ERROR: run as root." >&2; exit 1; }
+
 APP_DIR="${APP_DIR:-/opt/8west-analytics}"
 COMPOSE_FILE="$APP_DIR/compose.yaml"
 CONFIG_DIR="/etc/8west-analytics"
@@ -10,7 +12,7 @@ require_file() {
 }
 
 command -v docker >/dev/null 2>&1 || { echo "ERROR: Docker is not installed." >&2; exit 1; }
-docker info >/dev/null 2>&1 || { echo "ERROR: Docker daemon is unavailable to this user." >&2; exit 1; }
+docker info >/dev/null 2>&1 || { echo "ERROR: Docker daemon is unavailable." >&2; exit 1; }
 require_file "$COMPOSE_FILE"
 require_file "$CONFIG_DIR/postgres.env"
 require_file "$CONFIG_DIR/umami.env"
