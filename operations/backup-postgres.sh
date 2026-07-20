@@ -35,12 +35,16 @@ docker compose -f "$COMPOSE_FILE" exec -T postgres sh -lc \
 
 [[ -s "$TEMP" ]] || { echo "ERROR: backup is empty." >&2; exit 1; }
 
+# Validate with pg_restore from the same PostgreSQL 17 container that created
+# the archive. This prevents host client-version drift from rejecting a valid
+# newer custom-format dump.
+docker compose -f "$COMPOSE_FILE" exec -T postgres pg_restore --list < "$TEMP" >/dev/null
+
 mv "$TEMP" "$FINAL"
 sha256sum "$FINAL" > "$CHECKSUM"
 chmod 0600 "$FINAL" "$CHECKSUM"
 chown root:root "$FINAL" "$CHECKSUM"
 
-pg_restore --list "$FINAL" >/dev/null
 end_epoch="$(date +%s)"
 size_bytes="$(stat -c '%s' "$FINAL")"
 
