@@ -1,0 +1,20 @@
+schema_version: 1
+
+events: []
+
+# Every proposed event must define:
+# - name
+# - application
+# - purpose
+# - trigger
+# - approved_attributes
+# - forbidden_attributes
+# - environment_behavior
+# - owner
+# - retention_expectation
+# - validation_method
+# - status
+#
+# Event names must use lowercase snake_case.
+# Events involving identifiers, authentication, healthcare, email, customer,
+# device, or financial data require explicit privacy review before implementation.
