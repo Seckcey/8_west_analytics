@@ -29,6 +29,7 @@ services:
     ports:
       - "127.0.0.1:3000:3000"
     networks:
+      - frontend
       - backend
     depends_on:
       postgres:
@@ -43,6 +44,8 @@ services:
       - no-new-privileges:true
 
 networks:
+  frontend:
+    driver: bridge
   backend:
     internal: true
 
