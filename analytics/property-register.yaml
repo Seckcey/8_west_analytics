@@ -1,6 +1,42 @@
 schema_version: 1
 
-properties: []
+properties:
+  - business: 8 West Ventures, LLC
+    product: Corporate marketing website
+    hostname: 8westventures.com
+    additional_hostnames:
+      - www.8westventures.com
+    environment: production
+    umami_property_id: pending_manual_creation
+    owner: Frankie and Mary
+    privacy_classification: public_marketing_aggregate_only
+    status: approved_pending_property_id_and_deployment_path_verification
+    integration_repository: pending_active_source_repository_confirmation
+    source_reference_repository: Seckcey/8west_hostgator_account_all
+    source_reference_paths:
+      - public_html/index.html
+      - public_html/assets/js/main.js
+    integration_commit: null
+    first_production_date: null
+    tracker_configuration:
+      auto_track_pageviews: true
+      allowed_domains:
+        - 8westventures.com
+        - www.8westventures.com
+      exclude_search_parameters: true
+      exclude_hash_fragments: true
+      session_replay: prohibited
+      form_capture: prohibited
+      custom_event_attributes: allowlist_only
+    approved_custom_events:
+      - navigation_clicked
+      - consultation_button_clicked
+      - portfolio_link_clicked
+      - intranet_link_clicked
+      - contact_email_clicked
+      - contact_form_started
+      - contact_form_submitted
+      - contact_form_failed
 
 # Each property should record:
 # - business
