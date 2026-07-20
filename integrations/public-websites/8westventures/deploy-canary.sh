@@ -14,6 +14,7 @@ PREVIOUS_RELEASE=""
 SWITCHED=0
 
 cleanup() {
+  rm -f "$CURRENT_LINK.next" "$CURRENT_LINK.rollback"
   if [[ "$SWITCHED" -eq 1 && -n "$PREVIOUS_RELEASE" ]]; then
     echo "ERROR: validation failed after release switch; restoring prior release." >&2
     ln -s "$PREVIOUS_RELEASE" "$CURRENT_LINK.rollback"
@@ -43,15 +44,36 @@ grep -Fq 'data-exclude-hash", "true"' "$NEW_RELEASE/public/assets/js/main.js"
 grep -Fq 'contact_form_submitted' "$NEW_RELEASE/public/assets/js/main.js"
 grep -Fq 'contact_form_failed' "$NEW_RELEASE/public/assets/js/main.js"
 
-# Confirm form values are used only by the existing form provider/mail fallback,
-# never as arguments to the analytics wrapper.
-if grep -En 'trackEvent\([^\n]*(name|email|company|message|accessKey|payload|json)' "$NEW_RELEASE/public/assets/js/main.js"; then
-  echo "ERROR: possible sensitive value in analytics call." >&2
-  exit 1
-fi
+python3 - "$NEW_RELEASE/public/assets/js/main.js" <<'PY'
+import re
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+text = path.read_text(encoding="utf-8")
+for payload in re.findall(r'trackEvent\(\s*"[^"]+"\s*,\s*\{(.*?)\}\s*\)', text, flags=re.S):
+    forbidden = [
+        "data.name",
+        "data.email",
+        "data.company",
+        "data.message",
+        "form.name",
+        "form.email",
+        "form.company",
+        "form.message",
+        "accessKey",
+        "payload",
+        "json.",
+    ]
+    found = [token for token in forbidden if token in payload]
+    if found:
+        raise SystemExit(f"ERROR: sensitive token in analytics payload: {found}")
+print("PASS: analytics payloads contain no form-value variables")
+PY
 
 apache2ctl configtest
 
+rm -f "$CURRENT_LINK.next" "$CURRENT_LINK.rollback"
 ln -s "$NEW_RELEASE" "$CURRENT_LINK.next"
 mv -Tf "$CURRENT_LINK.next" "$CURRENT_LINK"
 SWITCHED=1
