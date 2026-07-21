@@ -1,0 +1,45 @@
+schema_version: 1
+intake_date: 2026-07-20
+rollout_policy:
+  initial_mode: sanitized_pageviews_only
+  session_replay: prohibited
+  form_capture: prohibited
+  freeform_event_data: prohibited
+  raw_identifiers_in_paths: prohibited
+
+properties:
+  - product: Milepost
+    hostname: support.8westit.com
+    umami_property_id: 6ae66788-b69e-408d-962b-83c1b072eb6d
+    resolved_ipv4: 13.52.91.237
+    observed_https_status: 302
+    repository: Seckcey/8westit_webapp
+    privacy_classification: authenticated_rmm_operational_sensitive
+    status: registered_pending_live_discovery
+
+  - product: ApexOdds
+    hostname: apexodds.8westventures.com
+    umami_property_id: d1f9c3cd-1115-4037-a679-cea8bf9bd09c
+    resolved_ipv4: 35.172.195.208
+    observed_https_status: 302
+    repository: Seckcey/kalshi_bet
+    privacy_classification: authenticated_financial_operational_sensitive
+    status: registered_pending_live_discovery
+
+  - product: NaildiT
+    hostname: naildit.8westventures.com
+    umami_property_id: ea32b4fe-d902-4a69-a7a1-ede08162485b
+    resolved_ipv4: 173.255.206.232
+    observed_https_status: 200
+    repository: Seckcey/naildit
+    privacy_classification: government_opportunity_workflow_sensitive
+    status: registered_pending_live_discovery
+
+  - product: SpineSync
+    hostname: spinesync.8westit.com
+    umami_property_id: 664a6d75-4400-4d56-b00a-4de12cdfa5a2
+    resolved_ipv4: 45.33.125.99
+    observed_https_status: 200
+    repository: Seckcey/spine_sync
+    privacy_classification: clinical_demo_high_sensitivity
+    status: registered_pending_live_discovery
